@@ -3,95 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Git & GitHub course participants">
     <title>Git & GitHub Participants</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
+        :root {
+            color-scheme: light dark;
+            --bg: #f6f8fa;
+            --surface: #ffffff;
+            --text: #24292f;
+            --muted: #57606a;
+            --border: #d0d7de;
+            --accent: #0969da;
+            --shadow: 0 8px 24px rgba(140, 149, 159, 0.18);
+            --shadow-hover: 0 14px 32px rgba(140, 149, 159, 0.28);
         }
 
-        h1 {
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0d1117;
+                --surface: #161b22;
+                --text: #f0f6fc;
+                --muted: #8b949e;
+                --border: #30363d;
+                --accent: #58a6ff;
+                --shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+                --shadow-hover: 0 14px 32px rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(88, 166, 255, 0.10),
+                    transparent 34%
+                ),
+                var(--bg);
+        }
+
+        main {
+            width: min(1100px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 56px 0 64px;
+        }
+
+        .hero {
             text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(2rem, 5vw, 3rem);
+            letter-spacing: -0.04em;
+        }
+
+        .hero p {
+            margin: 10px auto 0;
+            max-width: 620px;
+            color: var(--muted);
+            font-size: 1rem;
         }
 
         #participants {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            justify-content: center;
+            gap: 22px;
         }
 
         .card {
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            min-height: 210px;
+            padding: 24px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+
+            transition:
+                transform 160ms ease,
+                box-shadow 160ms ease,
+                border-color 160ms ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent);
+        }
+
+        .avatar {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            object-fit: cover;
+
+            border: 3px solid var(--surface);
+            outline: 1px solid var(--border);
+
+            margin-bottom: 16px;
+            background: var(--bg);
         }
 
         .card h2 {
-            margin-top: 0;
+            margin: 0;
+            font-size: 1.2rem;
+            line-height: 1.3;
         }
 
-        .card a {
-            word-break: break-all;
+        .username {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .date {
+            margin: auto 0 18px;
+            padding-top: 18px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .github-link {
+            width: 100%;
+            padding: 10px 16px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+
+            transition:
+                background 160ms ease,
+                border-color 160ms ease,
+                color 160ms ease;
+        }
+
+        .github-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: rgba(88, 166, 255, 0.08);
+        }
+
+        .github-icon {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--muted);
+            padding: 48px 20px;
+        }
+
+        @media (max-width: 640px) {
+            main {
+                width: min(100% - 20px, 1100px);
+                padding-top: 36px;
+            }
+
+            #participants {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                max-width: 360px;
+                margin: 0 auto;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <h1>Git & GitHub Participants</h1>
+    <main>
 
-    <div id="participants"></div>
+        <header class="hero">
+            <h1>Git &amp; GitHub Participants</h1>
+            <p>A collection of everyone who has joined the project.</p>
+        </header>
+
+        <section
+            id="participants"
+            aria-label="Participants">
+        </section>
+
+    </main>
+
 
     <script>
+
+        function escapeHtml(value) {
+            return String(value)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+
+        function githubAvatar(username) {
+            return `https://github.com/${encodeURIComponent(username)}.png?size=160`;
+        }
+
+
         async function loadParticipants() {
-            const response = await fetch("files.txt");
-            const text = await response.text();
 
-            const files = text
-                .split("\n")
-                .map(line => line.trim())
-                .filter(line => line !== "");
+            const container =
+                document.getElementById("participants");
 
-            const container = document.getElementById("participants");
+            try {
 
-            for (const file of files) {
-                try {
-                    const response = await fetch(file);
-                    const markdown = await response.text();
+                const response =
+                    await fetch("files.txt");
 
-                    const name = markdown.match(/name:\s*"([^"]+)"/i)?.[1] || "Unknown";
-                    const username = markdown.match(/github username:\s*([^\s]+)/i)?.[1] || "";
-                    const date = markdown.match(/date:\s*([^\s]+)/i)?.[1] || "";
-
-                    const githubUrl = `https://github.com/${username}`;
-
-                    const card = document.createElement("div");
-                    card.className = "card";
-
-                    card.innerHTML = `
-                        <h2>${name}</h2>
-                        <p><strong>GitHub:</strong>
-                            <a href="${githubUrl}" target="_blank">
-                                @${username}
-                            </a>
-                        </p>
-                        <p><strong>Date:</strong> ${date}</p>
-                    `;
-
-                    container.appendChild(card);
-
-                } catch (error) {
-                    console.error(`Could not load ${file}:`, error);
+                if (!response.ok) {
+                    throw new Error(
+                        `Could not load files.txt (${response.status})`
+                    );
                 }
+
+                const text =
+                    await response.text();
+
+                const files =
+                    text
+                        .split(/\r?\n/)
+                        .map(line => line.trim())
+                        .filter(Boolean);
+
+
+                if (files.length === 0) {
+
+                    container.innerHTML =
+                        '<p class="empty">No participants found.</p>';
+
+                    return;
+                }
+
+
+                const cards =
+                    await Promise.all(
+                        files.map(async file => {
+
+                            try {
+
+                                const response =
+                                    await fetch(file);
+
+                                if (!response.ok) {
+                                    throw new Error(
+                                        `Could not load ${file} (${response.status})`
+                                    );
+                                }
+
+                                const markdown =
+                                    await response.text();
+
+
+                                const name =
+                                    markdown.match(
+                                        /name:\s*"([^"]+)"/i
+                                    )?.[1] || "Unknown";
+
+
+                                const username =
+                                    markdown.match(
+                                        /github username:\s*([^\s]+)/i
+                                    )?.[1] || "";
+
+
+                                const date =
+                                    markdown.match(
+                                        /date:\s*([^\s]+)/i
+                                    )?.[1] || "";
+
+
+                                if (!username) {
+                                    throw new Error(
+                                        `No GitHub username found in ${file}`
+                                    );
+                                }
+
+
+                                const githubUrl =
+                                    `https://github.com/${encodeURIComponent(username)}`;
+
+
+                                return `
+                                    <article class="card">
+
+                                        <img
+                                            class="avatar"
+                                            src="${githubAvatar(username)}"
+                                            alt="${escapeHtml(username)}'s GitHub profile picture"
+                                            loading="lazy"
+                                        >
+
+                                        <h2>
+                                            ${escapeHtml(name)}
+                                        </h2>
+
+                                        <p class="username">
+                                            @${escapeHtml(username)}
+                                        </p>
+
+                                        ${
+                                            date
+                                                ? `<p class="date">
+                                                       Updated ${escapeHtml(date)}
+                                                   </p>`
+                                                : `<div class="date"></div>`
+                                        }
+
+                                        <a
+                                            class="github-link"
+                                            href="${githubUrl}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+
+                                            <svg
+                                                class="github-icon"
+                                                viewBox="0 0 16 16"
+                                                aria-hidden="true"
+                                            >
+                                                <path d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.63 5.47 7.7.4.08.55-.18.55-.39 0-.19-.01-.83-.01-1.51-2.01.45-2.53-.5-2.69-.97-.09-.23-.48-.97-.82-1.16-.28-.16-.68-.56-.01-.57.63-.01 1.08.59 1.23.84.72 1.24 1.87.89 2.33.68.07-.53.28-.89.51-1.1-1.78-.21-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.2-.08-.21-.36-1.05.08-2.18 0 0 .67-.22 2.2.84a7.35 7.35 0 0 1 2-.28c.68 0 1.36.1 2 .28 1.53-1.06 2.2-.84 2.2-.84.44 1.13.16 1.97.08 2.18.51.58.82 1.31.82 2.2 0 3.12-1.87 3.81-3.65 4.02.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.47.55.39A8.01 8.01 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z"/>
+                                            </svg>
+
+                                            View GitHub
+
+                                        </a>
+
+                                    </article>
+                                `;
+
+                            } catch (error) {
+
+                                console.error(error);
+
+                                return "";
+                            }
+
+                        })
+                    );
+
+
+                const html =
+                    cards
+                        .filter(Boolean)
+                        .join("");
+
+
+                container.innerHTML =
+                    html ||
+                    '<p class="empty">No valid participants found.</p>';
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                container.innerHTML =
+                    '<p class="empty">Could not load participants.</p>';
             }
         }
 
+
         loadParticipants();
+
     </script>
 
 </body>
