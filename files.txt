@@ -1,2 +1,6 @@
 participants/nihaltp.md
+<<<<<<< HEAD
 participants/devanandha.md
+=======
+participants/imthias.md
+>>>>>>> 81141f667c7d4a304f7a6b638be0a7564ca93c81
